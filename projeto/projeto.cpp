@@ -59,7 +59,7 @@ void correlacao(int L, int C) {
       for (int ii = i; ii < n + i; ii++) {
         for (int jj = j; jj < m + j; jj++) {
           
-          produto = produto + (filtro_media[ii][jj] * imagem[ii][jj]);
+          produto = produto + (filtro_media_3x3[ii][jj] * imagem[ii][jj]);
 
         }
       }
@@ -122,22 +122,50 @@ cv::Mat correlacao2(cv::Mat *image, int L, int C) {
   return cv::abs(imagem_resultante);
 }
 
+cv::Mat negativo_rgb(cv::Mat *image) {
+  int L = image->rows;
+  int C = image->cols;
+
+  cv::Mat imagem_original_convertida;
+
+  image->convertTo(imagem_original_convertida, CV_8UC3);
+
+  cv::Vec3b canais;
+
+  for (int i = 0; i < L; i++) {
+    for (int j = 0; j < C; j++) {
+      canais = imagem_original_convertida.at<cv::Vec3b>(i, j);
+
+      canais[2] = 255 - canais[2];
+      canais[1] = 255 - canais[1];
+      canais[0] = 255 - canais[0];
+
+      imagem_original_convertida.at<cv::Vec3b>(i, j) = canais;
+    }
+  }
+
+  return cv::abs(imagem_original_convertida);
+}
+
 int main() {
 
   cv::Mat imagem;
 
-  imagem= cv::imread("DancingInWater.jpg", cv::IMREAD_COLOR);
+  imagem = cv::imread("DancingInWater.jpg", cv::IMREAD_COLOR);
 
   if (!imagem.data) {
     std::cout << "não abriu imagem" << std::endl;
   }
   
-  cv::Mat nova_imagem = correlacao2(&imagem, imagem.rows, imagem.cols);
+  // cv::Mat nova_imagem = correlacao2(&imagem, imagem.rows, imagem.cols);
+
+  cv::Mat nova_imagem_negativa = negativo_rgb(&imagem);
 
   cv::namedWindow("janela", cv::WINDOW_NORMAL);
   cv::resizeWindow("janela", 800, 800);
 
-  cv::imshow("janela", nova_imagem);
+  // cv::imshow("janela", nova_imagem);
+  cv::imshow("janela", nova_imagem_negativa);
   cv::waitKey();
 
   return 0;
