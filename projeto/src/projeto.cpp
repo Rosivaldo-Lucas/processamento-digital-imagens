@@ -2,8 +2,8 @@
 #include <cmath>
 #include <opencv2/opencv.hpp>
 
-// #include "filtro.hpp"
 #include "../includes/Correlation.hpp"
+#include "../includes/NegativeImage.hpp"
 
 std::vector<std::vector<double>> filterBox15x15 = {
   {1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0},
@@ -33,7 +33,10 @@ int main() {
   }
   
   Correlation *correlation = new Correlation();
-  cv::Mat newImage = correlation->execute(&image, &filterBox15x15);
+  NegativeImage *negativeImage = new NegativeImage();
+
+  // cv::Mat newImage = correlation->execute(&image, &filterBox15x15);
+  cv::Mat newImage = negativeImage->execute(&image);
 
   cv::namedWindow("janela", cv::WINDOW_NORMAL);
   cv::resizeWindow("janela", 800, 800);
