@@ -17,6 +17,8 @@ class ConversionImage {
     HSB **converterRgbToHsb(const cv::Mat *image);
     cv::Mat converterHsbToRgb(HSB **hsb, int rows, int cols);
 
+    HSB **alterHue(HSB **hsb, int rows, int cols, double additionalHue);
+
 };
 
 #endif

@@ -4,8 +4,6 @@ HSB **ConversionImage::converterRgbToHsb(const cv::Mat *image) {
   const int imageRows = image->rows;
   const int imageCols = image->cols;
 
-  // std::vector<std::vector<HSB>> hsbResult(imageRows, std::vector<HSB>(imageCols));
-
   HSB **hsbResult = new HSB * [imageRows];
 
   for (int i = 0; i < imageRows; i++) {
@@ -67,9 +65,6 @@ HSB **ConversionImage::converterRgbToHsb(const cv::Mat *image) {
 }
 
 cv::Mat ConversionImage::converterHsbToRgb(HSB **hsb, int rows, int cols) {
-  // const int rowsHsb = hsb->size();
-  // const int colsHsb = (rowsHsb > 0) ? hsb[0].size() : 0;
-
   cv::Mat image(rows, cols, CV_8UC3);
 
   cv::Vec3b rgbChannel;
@@ -145,3 +140,28 @@ cv::Mat ConversionImage::converterHsbToRgb(HSB **hsb, int rows, int cols) {
   return image;
 }
 
+HSB **ConversionImage::alterHue(HSB **hsb, int rows, int cols, double additionalHue) {
+  HSB **hsbResult = new HSB * [rows];
+
+  for (int i = 0; i < rows; i++) {
+    hsbResult[i] = new HSB[cols];
+  }
+
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      double newHue = hsb[i][j].hue + additionalHue;
+
+      if (newHue < 0) {
+        newHue += 360;
+      } else if (newHue >= 360) {
+        newHue -= 360;
+      }
+
+      hsbResult[i][j].hue = newHue;
+      hsbResult[i][j].saturation = hsb[i][j].saturation;
+      hsbResult[i][j].brightness = hsb[i][j].brightness;
+    }
+  }
+
+  return hsbResult;
+}

@@ -26,7 +26,7 @@ std::vector<std::vector<double>> filterBox15x15 = {
 };
 
 int main() {
-  cv::Mat image = cv::imread("images/DancingInWater.jpg", cv::IMREAD_COLOR);
+  cv::Mat image = cv::imread("/home/rosivaldo/Documents/rosivaldo/engcomp/2023-1/pdi/projeto/images/testpat.1k.color2.tif", cv::IMREAD_COLOR);
 
   if (!image.data) {
     std::cout << "Não foi possível abrir a imagem." << std::endl;
@@ -43,8 +43,10 @@ int main() {
   // cv::Mat newImage = negativeImage->execute(&image);
   
   HSB **hsbResult = conversionImage->converterRgbToHsb(&image);
+
+  HSB **hsb = conversionImage->alterHue(hsbResult, image.rows, image.cols, 120);
         
-  cv::Mat newImage = conversionImage->converterHsbToRgb(hsbResult, image.rows, image.cols);
+  cv::Mat newImage = conversionImage->converterHsbToRgb(hsb, image.rows, image.cols);
 
   cv::namedWindow("janela", cv::WINDOW_NORMAL);
   cv::resizeWindow("janela", 800, 800);
