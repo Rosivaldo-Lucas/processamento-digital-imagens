@@ -26,7 +26,7 @@ cv::Mat Correlation::execute(const cv::Mat *image, const std::vector<std::vector
       for (int ii = i; ii < rowsFilter + i; ii++) {
         for (int jj = j; jj < colsFilter + j; jj++) {
 
-          cv::Vec3b rgbChannel = convertedOriginalImage.at<cv::Vec3b>(ii, jj);
+          cv::Vec3i rgbChannel = convertedOriginalImage.at<cv::Vec3i>(ii, jj);
 
           R = R + (filter->at(ii - i).at(jj - j) * rgbChannel[2]);
           G = G + (filter->at(ii - i).at(jj - j) * rgbChannel[1]);
@@ -34,12 +34,12 @@ cv::Mat Correlation::execute(const cv::Mat *image, const std::vector<std::vector
         }
       }
 
-      cv::Vec3b rgbChannelResult;
+      cv::Vec3i rgbChannelResult;
       rgbChannelResult[2] = R;
       rgbChannelResult[1] = G;
       rgbChannelResult[0] = B;
 
-      imageResult.at<cv::Vec3b>(i, j) = rgbChannelResult;
+      imageResult.at<cv::Vec3i>(i, j) = rgbChannelResult;
     }
   }
 

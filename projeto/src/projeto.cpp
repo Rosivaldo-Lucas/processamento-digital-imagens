@@ -1,9 +1,11 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include <opencv2/opencv.hpp>
 
 #include "../includes/Correlation.hpp"
 #include "../includes/NegativeImage.hpp"
+#include "../includes/ConversionImage.hpp"
 
 std::vector<std::vector<double>> filterBox15x15 = {
   {1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0, 1.0/225.0},
@@ -32,11 +34,17 @@ int main() {
     exit(0);
   }
   
-  Correlation *correlation = new Correlation();
-  NegativeImage *negativeImage = new NegativeImage();
+  // Correlation *correlation = new Correlation();
+  // NegativeImage *negativeImage = new NegativeImage();
+
+  ConversionImage *conversionImage = new ConversionImage();
 
   // cv::Mat newImage = correlation->execute(&image, &filterBox15x15);
-  cv::Mat newImage = negativeImage->execute(&image);
+  // cv::Mat newImage = negativeImage->execute(&image);
+  
+  HSB **hsbResult = conversionImage->converterRgbToHsb(&image);
+        
+  cv::Mat newImage = conversionImage->converterHsbToRgb(hsbResult, image.rows, image.cols);
 
   cv::namedWindow("janela", cv::WINDOW_NORMAL);
   cv::resizeWindow("janela", 800, 800);
