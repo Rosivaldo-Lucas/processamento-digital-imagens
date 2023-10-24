@@ -8,6 +8,8 @@ img_BGR = cv2.imread(path_img)
 img_RGB = cv2.cvtColor(img_BGR, cv2.COLOR_BGR2RGB)
 img_GRAY = cv2.cvtColor(img_RGB, cv2.COLOR_RGB2GRAY)
 
+### LIMIARIZAÇÃO - THRESH BINARY
+
 limiar = 140
 
 val_limiar, thresh = cv2.threshold(img_GRAY, limiar, 255, cv2.THRESH_BINARY)
